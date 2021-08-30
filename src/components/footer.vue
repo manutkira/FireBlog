@@ -18,7 +18,7 @@
                     <router-link class="link" :to="{name: 'Home'}">Home</router-link>
                     <router-link class="link" :to="{name: '#'}">Blogs</router-link>
                     <router-link class="link" :to="{name: '#'}">Create Post</router-link>
-                    <router-link class="link" :to="{name: '#'}">Login In / Register</router-link>
+                    <router-link v-if="!user" class="link" :to="{name: '#'}">Login In / Register</router-link>
                 </ul>
             </div>
           </div>
@@ -37,6 +37,11 @@ import linkedin from '../assets/Icons/linkedin-brands.svg';
 export default {
     components: {
         youTube,twitter,instagram,linkedin
+    },
+    computed: {
+        user(){
+           return this.$store.state.user
+        }
     }
 }
 </script>

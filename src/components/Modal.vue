@@ -29,8 +29,8 @@ export default {
     height: 100%;
     top: 0;
     background-color: rgba(0, 0, 0, 0.7);
-}
-.modal-content{
+    
+    .modal-content{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -44,5 +44,6 @@ export default {
     button{
         align-self: center;
     }
+}
 }
 </style>
