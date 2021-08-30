@@ -37,8 +37,10 @@
                                 </router-link>
                             </div>
                             <div @click="signOut" class="option">
+                                <router-link :to="{name: 'Home'}" class="option">
                                     <signOutIcon class="icon"/>
                                     <p>Sign Out</p>
+                                    </router-link>
                             </div>
                         </div>
                     </div>

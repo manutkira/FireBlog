@@ -1,5 +1,6 @@
 <template>
     <div class="form-wrap">
+            <loading v-if="loading"/>
         <form class="login">
             <p class="login-register">
                 Don't have an account?
@@ -28,24 +29,28 @@
 <script>
 import email from '../assets/Icons/envelope-regular.svg';
 import password from '../assets/Icons/lock-alt-solid.svg';
+import loading from '../components/loading.vue';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 export default {
     name: 'Login',
     components:{
-        email, password,
+        email, password, loading,
     },
     data() {
         return{
             email: null,
             password: null,
             error: null,
-            errorMsg: ''
+            errorMsg: '',
+            loading: null,
         }
     },
     methods:{
         signIn(){
+            this.loading = true;
             firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(() => {
+                this.loading = false
                 this.$router.push({name: 'Home'});
                 this.error = false;
                 this.errorMsg = '';
@@ -53,6 +58,7 @@ export default {
             }).catch((err) => {
                 this.error = true;
                 this.errorMsg = err.message;
+                this.loading = false
             })
         }
     }
