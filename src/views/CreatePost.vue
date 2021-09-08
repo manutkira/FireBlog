@@ -1,6 +1,7 @@
 <template>
   <div class="create-post">
       <BlogCoverPreview v-show="this.$store.state.blogPhotoPreview"/>
+      <loading v-show="loading"/>
       <div class="container">
           <div :class="{invisible: !error}" class="err-message">
               <p><span>Error: </span>{{this.errorMsg}}</p>
@@ -31,16 +32,22 @@
 <script>
 import firebase from 'firebase/app'
 import 'firebase/storage'
+import db from '../firebase/firebaseInit'
 import BlogCoverPreview from '../components/BlogCoverPreview'
 import Quill from 'quill'
+import Loading from '../components/loading.vue'
 window.Quill = Quill
 const ImageResize = require('quill-image-resize-module').default
 Quill.register('modules/imageResize', ImageResize)
 export default {
-  components: { BlogCoverPreview },
+  components: {
+       BlogCoverPreview,
+    Loading,
+        },
     name: 'CreatePost',
     data(){
         return{
+            loading: null,
             file: null,
             error: null,
             errorMsg: null,
@@ -82,7 +89,32 @@ export default {
         uploadBlog(){
             if(this.blogTitle.length !== 0 && this.blogHTML !== 0){
                 if(this.file){
+                    this.loading = true
+                    const storageRef = firebase.storage().ref()
+                    const docRef = storageRef.child(`documents/blogCoverPhotos/${this.$store.state.blogPhotoName}`)
+                    docRef.put(this.file).on('state_changed', snapshot => {
+                        console.log(snapshot);
+                    }, err => {
+                        console.log(err);
+                        this.loading = false
+                    }, async () =>{
+                        const downloadURL = await docRef.getDownloadURL()
+                        const timestamp = await Date.now()
+                        const dataBase = await db.collection('blogPosts').doc()
 
+                        await dataBase.set({
+                            blogID: dataBase.id,
+                            blogHTML: this.blogHTML,
+                            blogCoverPhoto: downloadURL,
+                            blogCoverPhotoName: this.blogCoverPhotoName,
+                            blogTitle: this.blogTitle,
+                            profileId: this.profileId,
+                            data: timestamp,
+                        })
+                        this.loading = false
+                        this.$router.push({name: 'ViewBlog'})
+                    }
+                    )
                     return
                 }
                 this.error = true
