@@ -1,6 +1,7 @@
 <template>
     <header>
         <nav class="container">
+            <loading v-if="loading"/>
             <div class="branding">
                 <router-link class="header" :to="{name: 'Home'}">FireBlog</router-link>
             </div>
@@ -8,7 +9,7 @@
                 <ul v-show="!mobile">
                     <router-link class="link" :to="{name: 'Home'}">Home</router-link>
                     <router-link class="link" :to="{name: 'Blogs'}">Blogs</router-link>
-                    <router-link class="link" to="#">Create Post</router-link>
+                    <router-link v-if="admin" class="link" :to="{name: 'CreatePost'}">Create Post</router-link>
                     <router-link v-if="!user" class="link" :to="{name: 'Login'}"
                     >Login/Register</router-link>
                 </ul>
@@ -30,7 +31,7 @@
                                     <p>Profile</p>
                                 </router-link>
                             </div>
-                            <div class="option">
+                            <div v-if="admin" class="option">
                                 <router-link :to="{name: 'Admin'}" class="option">
                                     <adminIcon class="icon"/>
                                     <p>Admin</p>
@@ -52,7 +53,7 @@
                 <ul class="mobile-nav" v-show="mobileNav">
                     <router-link class="link" :to="{name: 'Home'}">Home</router-link>
                     <router-link class="link" :to="{name: 'Blogs'}">Blogs</router-link>
-                    <router-link class="link" to="#">Create Post</router-link>
+                    <router-link v-if="admin" class="link" :to="{name: 'CreatePost'}">Create Post</router-link>
                     <router-link v-if="!user" class="link" :to="{name: 'Login'}">Login/Register</router-link>
                 </ul>
         </transition>
@@ -66,10 +67,11 @@ import adminIcon from '../assets/Icons/user-crown-light.svg';
 import signOutIcon from '../assets/Icons/sign-out-alt-regular.svg';
 import firebase from 'firebase/app'
 import 'firebase/auth'
+import loading from '../components/loading.vue'
 export default {
     name: 'navigation',
     components: {
-        menuIcon, userIcon, adminIcon, signOutIcon,
+        menuIcon, userIcon, adminIcon, signOutIcon, loading,
     },
     data() {
         return{
@@ -77,6 +79,7 @@ export default {
             mobile: null,
             mobileNav: null,
             windowWidth: null,
+            loading: null,
         };
     },
     created() {
@@ -103,13 +106,17 @@ export default {
         },
         signOut(){
             firebase.auth().signOut()
+            this.loading = true
             window.location.reload()
         }
     },
     computed: {
         user() {
             return this.$store.state.user
-        }
+        },
+        admin() {
+            return this.$store.state.profileAdmin
+        },
     }
 }
 </script>
