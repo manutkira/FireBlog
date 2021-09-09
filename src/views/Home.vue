@@ -1,12 +1,12 @@
 <template>
   <div class="home"> 
     <BlogPost v-if="!user" :post="welcomeScreen"/>
-    <BlogPost :post="post" v-for="(post, index) in sampleBlogPost" :key="index"/>
+    <BlogPost :post="post" v-for="(post, index) in blogPostsFeed" :key="index"/>
     <div class="blog-card-wrap">
       <div class="container">
         <h3>View More Recent Blogs</h3>
         <div class="blogs-card">
-          <blog-card :post="post" v-for="(post, index) in sampleBlogCards" :key="index"/>
+          <blog-card :post="post" v-for="(post, index) in blogPostsCard" :key="index"/>
         </div>
       </div>
     </div>
@@ -36,23 +36,14 @@ export default {
         welcomeScreen: true,
         photo: 'coding',
       },
-      sampleBlogPost: [
-        {
-          title: 'This is a filler Title!',
-          blogHTML: 'This is a filler blog post title!',
-          blogCoverPhoto: 'beautiful-stories',
-        },
-        {
-          title: 'This is a filler Title',
-          blogHTML: 'This is a filler blog post title!',
-          blogCoverPhoto: 'designed-for-everyone',
-        },
-      ],
     };
   },
   computed: {
-    sampleBlogCards(){
-      return this.$store.state.sampleBlogCards;
+    blogPostsFeed(){
+      return this.$store.getters.blogPostsFeed;
+    },
+    blogPostsCard(){
+      return this.$store.getters.blogPostsCard;
     },
     user(){
       return this.$store.state.user
@@ -62,33 +53,32 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.blog-card-wrap{
-  h3{
+.blog-card-wrap {
+  h3 {
     font-weight: 300;
     font-size: 28px;
     margin-bottom: 32px;
   }
 }
-.update{
-  .container{
+.updates {
+  .container {
     padding: 100px 25px;
-    display: flex;  
+    display: flex;
     flex-direction: column;
     align-items: center;
     @media (min-width: 800px) {
       padding: 125px 25px;
       flex-direction: row;
     }
-    .router-button{
+    .router-button {
       display: flex;
       font-size: 14px;
       text-decoration: none;
-      @media (min-width:800px) {
+      @media (min-width: 800px) {
         margin-left: auto;
-
       }
     }
-    h2{
+    h2 {
       font-weight: 300;
       font-size: 32px;
       max-width: 425px;
