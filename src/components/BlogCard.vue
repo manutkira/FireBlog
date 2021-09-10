@@ -25,6 +25,11 @@ import Edit from '../assets/Icons/edit-regular.svg';
 import Delete from '../assets/Icons/trash-regular.svg';
 export default {
     name: 'BlogCard',
+    data(){
+        return{
+            off: null,
+        }
+    },
     props: ['post'],
     components:{
         Arrow, Edit, Delete,
