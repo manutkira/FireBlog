@@ -184,6 +184,7 @@ export default {
     &:hover {
       background-color: rgba(48, 48, 48, 0.7);
     }
+    
   }
   .container {
     position: relative;
@@ -211,6 +212,10 @@ export default {
     }
   }
   .blog-info {
+    @media (max-width: 425px) {
+      display: flex;
+      flex-direction: column;
+    }
     display: flex;
     margin-bottom: 32px;
     input:nth-child(1) {
@@ -225,6 +230,7 @@ export default {
         outline: none;
         box-shadow: 0 1px 0 0 #303030;
       }
+      
     }
     .upload-file {
       flex: 1;
@@ -234,9 +240,35 @@ export default {
       input {
         display: none;
       }
+      label{
+        @media (max-width: 425px) {
+          transition: .5s ease all;
+          cursor: pointer;
+          font-size: 10px;
+          margin-top: 14px;
+          padding: 10px 14px;
+          background-color: #303030;
+          color: #fff;
+          border-radius: 20px;
+          border: none;
+          text-transform: uppercase;
+        }
+      }
       .preview {
         margin-left: 16px;
         text-transform: initial;
+        @media (max-width: 425px) {
+          transition: .5s ease all;
+          cursor: pointer;
+          font-size: 10px;
+          margin-top: 14px;
+          padding: 0px 14px;
+          background-color: #303030;
+          color: #fff;
+          border-radius: 20px;
+          border: none;
+          text-transform: uppercase;
+        }
       }
       span {
         font-size: 12px;
@@ -269,6 +301,10 @@ export default {
     margin-top: 32px;
     button {
       margin-right: 16px;
+    }
+    @media (max-width: 425px) {
+      display: flex;
+      flex-direction: column;
     }
   }
 }
